@@ -102,6 +102,7 @@ check_install curl
 check_install ttf-mononoki-nerd
 check_install ttf-nerd-fonts-symbols
 check_install ttf-nerd-fonts-symbols-mono
+check_install hyfetch
 
 setup_paru
 setup_zsh
@@ -111,5 +112,8 @@ echo -e "\nSetting up aliases..."
 add_alias pacrubbish "'pacman -Qdtq | sudo pacman -Rns -'"
 add_alias pacrem "'pacman -R'"
 add_alias pacin "'sudo pacman -Sy'"
+add_alias neofetch neowofetch
 
-chsh -s /bin/zsh
+if ! (cat /etc/passwd | grep $(whoami) | grep -q zsh); then
+	chsh -s /usr/bin/zsh
+fi
