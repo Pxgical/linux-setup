@@ -103,12 +103,11 @@ check_install ttf-mononoki-nerd
 check_install ttf-nerd-fonts-symbols
 check_install ttf-nerd-fonts-symbols-mono
 
-echo -e "\nSetting up aliases..."
-	
-add_alias pacrubbish "'pacman -Qdtq | sudo pacman -Rns -'"
-add_alias pacrem "'pacman -R'"
-add_alias pacin "'sudo pacman -Sy'"
-
 setup_paru
 setup_zsh
 
+echo -e "\nSetting up aliases..."
+
+add_alias pacrubbish "'pacman -Qdtq | sudo pacman -Rns -'"
+add_alias pacrem "'pacman -R'"
+add_alias pacin "'sudo pacman -Sy'"
