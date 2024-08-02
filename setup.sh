@@ -18,7 +18,7 @@ function set_omz_update_option() {
     		echo "Update $option already set to $value..."
   	else
     		echo "Setting update $option to $value..."
-    		sed -i "s/^zstyle ':omz:update' $option/d" ~/.zshrc 
+    		sed -i "/^zstyle ':omz:update' $option/d" ~/.zshrc 
     		echo "zstyle ':omz:update' $option $value" >> ~/.zshrc
   	fi
 }
