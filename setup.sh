@@ -1,6 +1,7 @@
 #!/bin/bash
 
 function check_install() {
+	#Checks whether package is installed locally using pacman
 	if pacman -Qi "$1" &> /dev/null; then
 		echo "Package $1 is already installed..."
  	else
@@ -8,8 +9,9 @@ function check_install() {
     		sudo pacman -S "$1"
   	fi
 }
-
 function set_omz_update_option() {
+	#Takes two arguments, the update option to be changed, and the value it is to be changed to
+	#Then adds it to ~/.zshrc if the option is not already set to the value in it
 	option="$1"
  	value="$2"
   	if grep -q ^"zstyle ':omz:update' $option $value" ~/.zshrc; then
@@ -21,6 +23,8 @@ function set_omz_update_option() {
   	fi
 }
 function add_alias() {
+	#Takes two arguments, the name of the alias, and what the alias does
+	#Then adds to ~/.zshrc if the aliases are not already there
 	a_name="$1"
 	a_val="$2"
 	if grep -q "$a_name=$a_val" ~/.zshrc ; then 
@@ -33,6 +37,7 @@ function add_alias() {
 }
 function setup_paru() {
 	echo -e "\nStarting paru setup..."
+	#Checks whetehr the paru command exists
 	if ! command -v paru &> /dev/null; then
 		echo "Installing paru..."
 		check_install git
@@ -47,20 +52,21 @@ function setup_paru() {
 }
 function setup_aliases() {
 	echo -e "\nStarting alias setup..."
+	
+	#Adds an alias to clean up unneeded packages
 	add_alias pacrubbish "'pacman -Qdtq | sudo pacman -Rns -'"
 }
-
 function setup_zsh() {
 	echo -e "\nStarting zsh setup..."
 	check_install zsh
 
-	#ENSURE ZSHRC FILE EXISTS
+	#Ensures the .zshrc file exists
 	if [ ! -f ~/.zshrc ]; then
         	echo "Zshrc not found, creating now..."
 		touch ~/.zshrc
     	fi
 
-	#ENSURE OH-MY-ZSH IS INSTALLED	
+	#Installs oh-my-zsh	
 	if [ ! -d ~/.oh-my-zsh ]; then
  		echo "Installing oh-my-zsh..."
  		sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended 
@@ -68,7 +74,7 @@ function setup_zsh() {
 		echo "oh-my-zsh already installed..."
 	fi
 
-	#INSTALL COMFYLINE PROMPT
+	#Installs comfyline prompt
 	if [ ! -f ~/.oh-my-zsh/custom/themes/comfyline.zsh-theme ]; then
 		check_install git
   		echo "Installing comfyline theme..."
@@ -81,9 +87,9 @@ function setup_zsh() {
 		echo "Comfyline already installed..."
 	fi
 
-	#SET OMZ UPDATE MODE TO AUTO
+	#Sets oh-my-zsh's update mode to automatic
 	set_omz_update_option mode auto
-	#SET OMZ UPDATE FREQUENCY TO WEEKLY
+	#Sets oh-my-zsh's update frequency to weekly
 	set_omz_update_option frequency 7
 }
 
