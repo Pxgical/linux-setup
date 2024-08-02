@@ -50,7 +50,7 @@ function setup_paru() {
 		echo "Installing paru..."
 		git clone --progress https://aur.archlinux.org/paru-bin.git
 		cd paru-bin
-		makepkg -si
+		yes | makepkg -si
 		cd ..
 		rm -rf paru-bin
 		echo "Paru finished installing..."
@@ -79,7 +79,7 @@ function setup_zsh() {
 	#Installs comfyline prompt
 	if [ ! -f ~/.oh-my-zsh/custom/themes/comfyline.zsh-theme ]; then
   		echo "Installing comfyline prompt..."
- 		git clone https://gitlab.com/imnotpua/comfyline_prompt
+ 		git clone --progress https://gitlab.com/imnotpua/comfyline_prompt
   		cd comfyline_prompt
   		./install.sh
   		cd ..
@@ -111,3 +111,5 @@ echo -e "\nSetting up aliases..."
 add_alias pacrubbish "'pacman -Qdtq | sudo pacman -Rns -'"
 add_alias pacrem "'pacman -R'"
 add_alias pacin "'sudo pacman -Sy'"
+
+chsh -s /bin/zsh
