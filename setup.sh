@@ -1,14 +1,19 @@
 #!/bin/bash
+packager="pacman"
 function command_exists() {
-	which "$1" >/dev/null 2>&1
+	command -v "$1" &> /dev/null
 }
 function check_install() {
 	#Checks whether package is installed locally using pacman
-	if pacman -Qi "$1" &> /dev/null; then
+	if "$packager" -Qi "$1" &> /dev/null; then
 		echo "Package $1 is already installed..."
  	else
     		echo "Installing $1..."
-    		yes | sudo pacman -S "$1"
+		if [ "$packager" == "pacman" ]; then
+    			yes | sudo "$packager" -S "$1"
+		else 
+			yes | "$packager" -S "$1"
+		fi
   	fi
 }
 function set_omz_update_option() {
@@ -47,15 +52,17 @@ function setup_paru() {
 	echo -e "\nSetting up paru..."
 	#Checks whether the paru command exists
 	if ! command_exists paru ; then
-		echo "Installing paru..."
+2		echo "Installing paru..."
 		git clone --progress https://aur.archlinux.org/paru-bin.git
 		cd paru-bin
 		yes | makepkg -si
 		cd ..
 		rm -rf paru-bin
 		echo "Paru finished installing..."
+		packager="paru"
 	else 
 		echo "Paru already installed..."
+		packager="paru"
 	fi
 }
 function setup_zsh() {
@@ -92,10 +99,12 @@ function setup_zsh() {
 	set_omz_update_option frequency 7
 }
 
-echo -e "\nInstalling packages..."
-
+echo -e "\nInstalling pre-requisites"
 check_install git 
 check_install base-devel
+setup_paru
+
+echo -e "\nInstalling packages..."
 check_install zsh
 check_install trash-cli
 check_install curl
@@ -104,7 +113,6 @@ check_install ttf-nerd-fonts-symbols
 check_install ttf-nerd-fonts-symbols-mono
 check_install hyfetch
 
-setup_paru
 setup_zsh
 
 echo -e "\nSetting up aliases..."
