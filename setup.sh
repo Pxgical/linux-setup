@@ -29,6 +29,15 @@ function zshrc-add {
 		echo "$1" >> ~/.zshrc
 	fi
 }
+function zsh-plugins() {
+	if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then 
+		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	fi
+	if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
+		git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+	fi
+	sed -i "s/plugins=(.*/plugins=(git zoxide zsh-autosuggestions zsh-syntax-highlighting)/" ~/.zshrc
+}
 function comfyline(){
 	if [ ! -f ~/.oh-my-zsh/custom/themes/comfyline.zsh-theme ]; then
 		git clone https://gitlab.com/imnotpua/comfyline_prompt
@@ -39,6 +48,7 @@ function setup() {
 	paru_get
 	install ${packages[@]}
 	comfyline
+	zsh-plugins
 	zshrc-add "export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'"
 	zshrc-add "zstyle ':completion:*' format $'\\e[2;37mCompleting %d\\e[m'"
 	zshrc-add "source <(carapace _carapace zsh)"
