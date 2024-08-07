@@ -1,5 +1,5 @@
 #!/bin/bash
-packages=(git base-devel zsh trash-cli curl ttf-mononoki-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono hyfetch oh-my-zsh-git carapace-bin)
+packages=(git base-devel zsh trash-cli curl ttf-mononoki-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono hyfetch oh-my-zsh-git carapace-bin zoxide fzf)
 
 function swap_shell() {
 	if ! (cat /etc/passwd | grep $(whoami) | grep -q zsh); then
@@ -42,8 +42,9 @@ function setup() {
 	zshrc-add "export CARAPACE_BRIDGES='zsh,fish,bash,inshellisense'"
 	zshrc-add "zstyle ':completion:*' format $'\\e[2;37mCompleting %d\\e[m'"
 	zshrc-add "source <(carapace _carapace zsh)"
+	zshrc-add "eval \"\$(zoxide init zsh)\""
 	swap_shell
-	add_alias neofetch neowofetch
+	add_alias neofetch neowofetch 
 }
 
 setup
