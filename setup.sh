@@ -1,5 +1,5 @@
 #!/bin/bash
-packages=(git base-devel zsh trash-cli curl ttf-mononoki-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono hyfetch oh-my-zsh-git carapace-bin zoxide fzf github-cli)
+packages=(git base-devel zsh trash-cli curl ttf-mononoki-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono hyfetch oh-my-zsh-git carapace-bin zoxide fzf github-cli bat thefuck)
 
 function swap_shell() {
 	if ! (cat /etc/passwd | grep $(whoami) | grep -q zsh); then
@@ -30,13 +30,13 @@ function zshrc-add {
 	fi
 }
 function zsh-plugins() {
-	if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]; then 
-		git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+	if [ ! -d ~/.oh-my-zsh/custom/plugins/fast-syntax-highlighting ]; then 
+		git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 	fi
 	if [ ! -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
 		git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 	fi
-	sed -i "s/plugins=(.*/plugins=(git zoxide zsh-autosuggestions zsh-syntax-highlighting)/" ~/.zshrc
+	sed -i "s/plugins=(.*/plugins=(git zoxide zsh-autosuggestions fast-syntax-highlighting thefuck)/" ~/.zshrc
 }
 function comfyline(){
 	if [ ! -f ~/.oh-my-zsh/custom/themes/comfyline.zsh-theme ]; then
@@ -53,6 +53,7 @@ function setup() {
 	zshrc-add "zstyle ':completion:*' format $'\\e[2;37mCompleting %d\\e[m'"
 	zshrc-add "source <(carapace _carapace zsh)"
 	zshrc-add "eval \"\$(zoxide init zsh)\""
+	zshrc-add "eval \$(thefuck --alias)"
 	swap_shell
 	add_alias neofetch neowofetch 
 }
