@@ -1,5 +1,5 @@
 #!/bin/bash
-packages=(git base-devel zsh trash-cli curl ttf-mononoki-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono hyfetch oh-my-zsh-git carapace-bin zoxide fzf)
+packages=(git base-devel zsh trash-cli curl ttf-mononoki-nerd ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-mono hyfetch oh-my-zsh-git carapace-bin zoxide fzf github-cli)
 
 function swap_shell() {
 	if ! (cat /etc/passwd | grep $(whoami) | grep -q zsh); then
